@@ -1,0 +1,34 @@
+### must be same as
+name: test
+suffix: ~  # add suffix to saved images
+model: ll_dataset
+distortion: sr
+scale: 1
+crop_border: ~  # crop border when evaluation. If None(~), crop the scale pixels
+gpu_ids: [1]
+
+datasets:
+  test:  # the 1st test dataset
+    name: test
+    dataroot_GT: 
+    dataroot_LQ: 
+
+
+network_G:
+  which_model_G: DCENet
+  nf: 16
+  n_l_blocks: [1,3,4,3,1]
+  n_h_blocks: [1,2,2,2,1]
+
+#### path
+path:
+  root: ./
+  pretrain_model_G: 
+
+train:
+  prior_warmup_steps: 5000
+  weight_moe: 0.01
+  moe_sparsity_scale: 1.0
+  num_moe_stages: 1
+  weight_hf: !!float 1e-5
+  hf_ramp_steps: 0
