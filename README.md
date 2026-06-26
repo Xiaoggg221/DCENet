@@ -86,7 +86,7 @@ The testing results will be saved to the corresponding output directory.
 
 ### Visual Comparison on LSRW-Huawei
 
-<img src="assets/visual_comparison4" width="100%">
+<img src="assets/visual_comparison4.png" width="100%">
 
 ### Downstream Object Detection Results
 
