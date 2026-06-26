@@ -1,85 +1,121 @@
-# DCENet
+# DCE-Net: Dual-Prior Conditioned Adaptive Expert Network for Low-Light Image Enhancement
 
-PyTorch inference code for **DCENet: Dual-Prior Conditioned Adaptive Expert Network for Low-Light Image Enhancement**.
+# Abstract
 
-This repository provides the inference implementation and pretrained checkpoint for low-light image enhancement.
+Low light image enhancement aims to improve the visibility of degraded images to meet the needs of human visual perception. The existing low light image enhancement methods focus on macro semantics and global perception, and lack of explicit modeling of fine-grained physical structure, which is easy to lead to the loss of micro details. At the same time, the static network is difficult to effectively deal with the complex hybrid degradation of spatial heterogeneity. Therefore, this paper proposes a double prior guided and adaptive expert network (DCE-Net). Firstly, the Micro-structure Conditioned Structure Mining (MCSM) mechanism is constructed to adaptively generate high fidelity gradient priors, and form a complementary dual-prior system with external semantics to realize the precise collaborative guidance of macro concept micro edge. Secondly, an Adaptive Conditioned Expert (ACE) mechanism is proposed, which distributes local features to heterogeneous expert subnetworks through pixel-level dynamic feature routing, and introduces differentiated restoration biases for different regions, so as to break through the restoration bottleneck of spatial heterogeneous degradation. On this basis, a high-frequency fidelity constraint strategy based on reliable edge mask is designed to dynamically focus on the real physical edge to replace the full band undifferentiated optimization, and effectively suppress artifacts and noise in the smooth region. Extensive experiments on several benchmark datasets show that DCE-Net shows significant advantages in both quantitative and qualitative evaluation.
 
-## Overview
+<img src="assets/framework.png" width="100%">
 
-DCENet is designed for real-world low-light image enhancement. The model combines micro-structure prior mining and adaptive expert-based feature restoration to improve brightness, structural details, and perceptual quality under complex low-light degradation.
+### News
 
-The current release includes:
+[**2026.6**] We release the initial version of DCE-Net, including code and basic testing scripts. <br>
+[**2026.6**] More visual comparison results and pretrained models will be updated. <br>
+[**2026.6**] The complete experimental results on LOL-v1, LOL-v2-Real, LOL-v2-Syn, and LSRW-Huawei will be released soon. <br>
 
-- Inference code
-- Network architecture
-- Testing configuration
-- Pretrained checkpoint for LOL-v1
-- Environment configuration
+# 🛠️ Preparation
 
-Training code and extended evaluation scripts are not included in this release.
+### Clone the repo
 
-## Environment
+```sh
+git clone https://github.com/Xiaoggg221/DCENet.git
+cd DCENet
+```
 
-Create the environment:
 
-    conda env create -f environment.yml
-    conda activate cwnet
+# 🎫 Install
 
-If the Mamba-related packages cannot be installed automatically, local wheel files are provided:
+The environment configuration is provided in `environment.yml`. You can create a new conda environment by running:
 
-    pip install causal_conv1d-1.1.1+cu118torch2.1cxx11abiFALSE-cp310-cp310-linux_x86_64.whl
-    pip install mamba_ssm-1.1.3.post1+cu118torch2.1cxx11abiFALSE-cp310-cp310-linux_x86_64.whl
+```sh
+conda env create -f environment.yml
+conda activate dcenet
+```
 
-## Pretrained Model
+If you prefer to install dependencies manually, please refer to the package versions in `environment.yml`.
 
-The pretrained checkpoint is placed under:
+# 📦 Datasets
 
-    ./pretrained/DCENet_LOLv1.pth
+We conduct experiments on several widely used low-light image enhancement benchmarks, including:
 
-## Data Preparation
+* LOL-v1
+* LOL-v2-Real
+* LOL-v2-Syn
+* LSRW-Huawei
 
-Please organize the test data according to the paths defined in:
+Please organize the datasets according to your own local paths before training or testing. The detailed dataset preparation instructions will be updated soon.
 
-    ./options/test/LOL-v1.yml
+# 💻 Training and Test
 
-You may modify the dataset paths in the YAML file according to your local directory.
+### Training
 
-## Testing
+Run the following script to train the model:
 
-Run inference on LOL-v1:
+```sh
+python train.py
+```
 
-    python test.py -opt ./options/test/LOL-v1.yml
+You can modify the training settings, dataset paths, and saving directories according to your own experimental environment.
 
-The enhanced results will be saved to the output directory specified in the testing configuration.
+### Testing
 
-## Repository Structure
+Run the following script to test the trained model:
 
-    DCENet_release/
-    ├── data/
-    ├── models/
-    ├── options/
-    ├── pretrained/
-    ├── utils/
-    ├── test.py
-    ├── environment.yml
-    ├── README.md
-    └── LICENSE
+```sh
+python test.py
+```
 
-## Notes
+The testing results will be saved to the corresponding output directory.
 
-This repository is released for academic research and reproducibility.
+# 🚀 Qualitative Results
 
-Some utility components are adapted from existing open-source frameworks. Please follow the corresponding license terms when using this code.
+### Overall Framework
 
-## Citation
+<img src="assets/framework.png" width="100%">
 
-The citation information will be updated after publication.
+### Visual Comparison on LOL-v1
 
-## Optional Mamba Wheel
+<img src="assets/visual_comparison1.png" width="100%">
 
-The prebuilt `mamba_ssm` wheel is not included in this repository because of GitHub file-size limits.
+### Visual Comparison on LOL-v2-Real
 
-If `mamba-ssm` cannot be installed from pip, please download the wheel from the release page or external link, and then install it manually:
+<img src="assets/visual_comparison2.png" width="100%">
 
-    pip install mamba_ssm-1.1.3.post1+cu118torch2.1cxx11abiFALSE-cp310-cp310-linux_x86_64.whl
+### Visual Comparison on LOL-v2-Syn
+
+<img src="assets/visual_comparison3.png" width="100%">
+
+### Visual Comparison on LSRW-Huawei
+
+<img src="assets/visual_comparison4" width="100%">
+
+### Downstream Object Detection Results
+
+<img src="assets/detection_result.png" width="100%">
+
+Compared with existing low-light image enhancement methods, DCE-Net can restore clearer structural details, suppress noise amplification, and maintain more natural visual consistency under complex low-light degradation. The downstream detection results further show that the enhanced images can provide more favorable visual conditions for high-level vision tasks.
+
+# 📁 Project Structure
+
+```text
+DCENet/
+├── assets/
+│   ├── framework.png
+│   ├── visual_lolv1.png
+│   ├── visual_lolv2_real.png
+│   ├── visual_lolv2_syn.png
+│   ├── visual_huawei.png
+│   └── detection_result.png
+├── environment.yml
+├── main.py
+├── mods.py
+├── train.py
+├── test.py
+└── README.md
+```
+
+
+# ✏️ Contact
+
+If you have any questions, please contact:
+Email: gaoxr@stu.cqut.edu.cn
 
